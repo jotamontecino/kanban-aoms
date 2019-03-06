@@ -11,14 +11,46 @@ module.exports = {
 		ApiGateway,
 
 
-		// GraphQL Apollo Server
+    // GraphQL Apollo Server
 		ApolloService({
 
 			// Global GraphQL typeDefs
-			typeDefs: "",
+			typeDefs: `
+				scalar Date
+				scalar Timestamp
+			`,
 
 			// Global resolvers
-			resolvers: {},
+			resolvers: {
+				Date: {
+					__parseValue(value) {
+						return new Date(value); // value from the client
+					},
+					__serialize(value) {
+						return value.toISOString().split("T")[0]; // value sent to the client
+					},
+					__parseLiteral(ast) {
+						if (ast.kind === Kind.INT)
+							return parseInt(ast.value, 10); // ast value is always in string format
+
+						return null;
+					}
+				},
+				Timestamp: {
+					__parseValue(value) {
+						return new Date(value); // value from the client
+					},
+					__serialize(value) {
+						return value.toISOString(); // value sent to the client
+					},
+					__parseLiteral(ast) {
+						if (ast.kind === Kind.INT)
+							return parseInt(ast.value, 10); // ast value is always in string format
+
+						return null;
+					}
+				}
+			},
 
 			// API Gateway route options
 			routeOptions: {
@@ -29,12 +61,13 @@ module.exports = {
 
 			// https://www.apollographql.com/docs/apollo-server/v2/api/apollo-server.html
 			serverOptions: {
-				tracing: true,
+				tracing: false,
 
 				engine: {
 					apiKey: process.env.APOLLO_ENGINE_KEY
 				}
 			}
+      
 		})
-	]
+	],
 };
