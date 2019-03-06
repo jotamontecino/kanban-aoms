@@ -1,0 +1,46 @@
+{
+  "name": "kanban-server",
+  "version": "1.0.0",
+  "description": "My Moleculer microservices project",
+  "scripts": {
+    "dev": "moleculer-runner --hot",
+    "start": "moleculer-runner",
+    "cli": "moleculer connect NATS",
+    "ci": "jest --watch",
+    "test": "jest --coverage",
+    "lint": "eslint services",
+    "dc:up": "docker-compose up --build -d",
+    "dc:down": "docker-compose down",
+    "dev:up": "docker-compose -f docker-compose.dev up --build -d",
+    "dev:down": "docker-compose -f docker-compose.dev down"
+  },
+  "keywords": [
+    "microservices",
+    "moleculer"
+  ],
+  "author": "",
+  "devDependencies": {
+    "eslint": "^5.10.0",
+    "jest": "^23.6.0",
+    "jest-cli": "^23.6.0",
+    "moleculer-repl": "^0.5.3"
+  },
+  "dependencies": {
+    "graphql": "^14.1.1",
+    "moleculer": "^0.13.0",
+    "moleculer-apollo-server": "github:moleculerjs/moleculer-apollo-server",
+    "moleculer-web": "^0.9.0-beta2",
+    "nats": "^1.0.1"
+  },
+  "engines": {
+    "node": ">= 8.x.x"
+  },
+  "jest": {
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node",
+    "rootDir": "./services",
+    "roots": [
+      "../test"
+    ]
+  }
+}
