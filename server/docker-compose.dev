@@ -11,7 +11,7 @@ services:
     volumes:
       - ./:/app
     environment:
-      SERVICES: graphql, greeter, posts, users
+      SERVICES: graphql, greeter, posts, users, cards
       PORT: 80
     links:
       - nats

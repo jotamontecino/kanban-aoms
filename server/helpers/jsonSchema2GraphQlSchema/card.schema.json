@@ -1,6 +1,7 @@
 {
   "definitions": {
     "objectId": {
+      "scalar": true,
       "title": "ObjectId Definition",
       "type": "string",
       "pattern": "^([0-9a-fA-F]{24})$",
@@ -8,27 +9,38 @@
         "507f191e810c19729de860ea",
         "507F1F77BCf86CD799439011"
       ]
+    },
+    "refobjectid": {
+      "type": "string",
+      "scalar": true
+    },
+    "date": {
+      "scalar": true,
+      "title": "Date Definition",
+      "type": "string",
+      "pattern": "^(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z)$",
+      "exemples": [
+        "2018-08-23T08:10:25.000Z",
+        "2018-11-23T12:59:30.000Z"
+      ]
     }
   },
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "http://example.com/Card.json",
   "type": "Card",
+  "service": "cards",
   "title": "Card Schema",
   "required": [
     "id",
     "title",
-    "content"
+    "content",
+    "createdBy"
   ],
   "properties": {
     "id": {
       "$id": "#/properties/id",
-      "type": "string",
       "title": "The Card Unique Id",
-      "default": "",
-      "examples": [
-        "507f1f77bcf86cd799439011"
-      ],
-      "pattern": "^([a-f0-9\\-]*)$"
+      "$ref": "#/definitions/objectId"
     },
     "title": {
       "$id": "#/properties/title",
@@ -58,6 +70,19 @@
       "examples": [
         0
       ]
+    },
+    "createdBy": {
+      "$id": "#/properties/createdBy",
+      "title": "The User that created the card",
+      "$ref": "#/definitions/refobjectid",
+      "entity": "User",
+      "service": "users",
+      "rel" : "id"
+    },
+    "createdAt": {
+      "$id": "#/properties/createdAt",
+      "title": "The Card Date of creation",
+      "$ref": "#/definitions/date"
     },
     "tags": {
       "$id": "#/properties/tags",
