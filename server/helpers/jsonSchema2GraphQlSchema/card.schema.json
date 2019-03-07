@@ -1,0 +1,78 @@
+{
+  "definitions": {
+    "objectId": {
+      "title": "ObjectId Definition",
+      "type": "string",
+      "pattern": "^([0-9a-fA-F]{24})$",
+      "exemples": [
+        "507f191e810c19729de860ea",
+        "507F1F77BCf86CD799439011"
+      ]
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/Card.json",
+  "type": "Card",
+  "title": "Card Schema",
+  "required": [
+    "id",
+    "title",
+    "content"
+  ],
+  "properties": {
+    "id": {
+      "$id": "#/properties/id",
+      "type": "string",
+      "title": "The Card Unique Id",
+      "default": "",
+      "examples": [
+        "507f1f77bcf86cd799439011"
+      ],
+      "pattern": "^([a-f0-9\\-]*)$"
+    },
+    "title": {
+      "$id": "#/properties/title",
+      "type": "string",
+      "title": "The Card Title",
+      "default": "",
+      "examples": [
+        "Titre de la carte"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "content": {
+      "$id": "#/properties/content",
+      "type": "string",
+      "title": "The Card Main Content",
+      "default": "",
+      "examples": [
+        "Contenue de la carte"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "priority": {
+      "$id": "#/properties/priority",
+      "type": "integer",
+      "title": "The Card Priority Schema",
+      "default": 0,
+      "examples": [
+        0
+      ]
+    },
+    "tags": {
+      "$id": "#/properties/tags",
+      "type": "array",
+      "title": "The Card Tag List",
+      "items": {
+        "$id": "#/properties/tags/items",
+        "type": "string",
+        "title": "The Tag Schema",
+        "examples": [
+          "home",
+          "green"
+        ],
+        "pattern": "^(.*)$"
+      }
+    }
+  }
+}
