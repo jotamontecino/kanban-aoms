@@ -29,6 +29,8 @@
     "graphql": "^14.1.1",
     "moleculer": "^0.13.0",
     "moleculer-apollo-server": "github:moleculerjs/moleculer-apollo-server",
+    "moleculer-db": "^0.7.7",
+    "moleculer-db-adapter-mongo": "^0.4.2",
     "moleculer-web": "^0.9.0-beta2",
     "nats": "^1.0.1"
   },

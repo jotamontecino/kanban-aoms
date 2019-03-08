@@ -3,8 +3,14 @@
 const _ = require("lodash");
 const { MoleculerClientError } 	= require("moleculer").Errors;
 
+const DbService = require("moleculer-db");
+const MongoAdapter = require("moleculer-db-adapter-mongo");
+const ApiGateway = require("moleculer-web");
+
 const graphQlFactory = require("../helpers/jsonSchema2GraphQlSchema");
 const jsonSchema = require("../helpers/jsonSchema2GraphQlSchema/card.schema.json");
+const factory = new graphQlFactory(jsonSchema);
+const graphQlDefinition = factory.build();
 
 const cards = [
 	{ id: 1, title: "First post", author: 3, votes: 2, voters: [2,5], createdAt: new Date("2018-08-23T08:10:25") },
@@ -13,16 +19,27 @@ const cards = [
 	{ id: 4, title: "4th post", author: 3, votes: 3, voters: [4,1,2], createdAt: new Date("2018-10-23T10:33:00") },
 	{ id: 5, title: "5th post", author: 5, votes: 1, voters: [4], createdAt: new Date("2018-11-24T21:15:30") },
 ];
-const factory = new graphQlFactory(jsonSchema);
-const graphQlDefinition = factory.build();
-console.log("----");
-console.log(graphQlDefinition);
-console.log("----");
 
 module.exports = {
 	name: "cards",
+	mixins: [ApiGateway, DbService],
+	adapter: new MongoAdapter("mongodb://mongodb/cards"),
+	collection: "cards",
 	settings: {
 		graphql: graphQlDefinition,
+
+		port: process.env.PORT || 3000,
+
+		routes: [{
+			path: "/api",
+			whitelist: [
+				// Access to any actions in all services under "/api" URL
+				"**"
+			],
+			aliases: {
+				"REST cards": "cards"
+			}
+		}],
 	},
 	actions: {
 		find: {

@@ -1,6 +1,27 @@
 version: "3.0"
 
 services:
+  graphql:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    image: kanban-server
+    env_file: docker-compose.env
+    volumes:
+      - ./:/app
+    environment:
+      SERVICES: graphql
+      PORT: 80
+    links:
+      - nats
+    depends_on:
+      - nats
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=api"
+      - "traefik.port=80"
+      - "traefik.frontend.entryPoints=http"
+      - "traefik.frontend.rule=PathPrefix:/"
 
   api:
     build:
@@ -11,7 +32,7 @@ services:
     volumes:
       - ./:/app
     environment:
-      SERVICES: graphql, greeter, posts, users, cards
+      SERVICES: greeter, posts, users, cards
       PORT: 80
     links:
       - nats
@@ -36,3 +57,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
+
+  mongodb:
+    image: mongo:latest
+    ports:
+        - 27017:27017
+    volumes:
+      - /data/db
+      - ./data:/import
