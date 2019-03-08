@@ -1,7 +1,7 @@
 version: "3.0"
 
 services:
-  graphql:
+  gateway:
     build:
       context: .
       dockerfile: ./Dockerfile.dev
@@ -22,7 +22,6 @@ services:
       - "traefik.port=80"
       - "traefik.frontend.entryPoints=http"
       - "traefik.frontend.rule=PathPrefix:/"
-
   api:
     build:
       context: .
@@ -32,21 +31,18 @@ services:
     volumes:
       - ./:/app
     environment:
-      SERVICES: greeter, posts, users, cards
-      PORT: 80
+      SERVICES: posts, users, cards
     links:
       - nats
+      - mongodb
     depends_on:
       - nats
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=api"
-      - "traefik.port=80"
-      - "traefik.frontend.entryPoints=http"
-      - "traefik.frontend.rule=PathPrefix:/"
+      - mongodb
 
   nats:
     image: nats
+    ports:
+    - "4222:4222"
 
   traefik:
     image: traefik

@@ -9,8 +9,6 @@ module.exports = {
 	mixins: [
 		// Gateway
 		ApiGateway,
-
-
     // GraphQL Apollo Server
 		ApolloService({
 
@@ -85,4 +83,14 @@ module.exports = {
 
 		})
 	],
+  settings: {
+		port: process.env.PORT || 3000,
+
+		routes: [{
+			path: "/",
+			aliases: {
+				"REST cards": "cards"
+			}
+		}],
+  }
 };
